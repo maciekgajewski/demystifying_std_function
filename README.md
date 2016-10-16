@@ -9,6 +9,7 @@ Student should be familiar with the following C++ concepts:
 
 * Functor
 * Function pointer
+* Partial template specialization
 * Variadic templates
 * Universal references
 * Type erasure

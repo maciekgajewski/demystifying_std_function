@@ -73,8 +73,9 @@ int main()
 	assert(ctr == 3);
 	
 	// type
-	pr::function<int()> ff = counter_functor{};
+	const pr::function<int()> ff = counter_functor{};
 	assert(ff.target_type() == typeid(counter_functor));
-	
-
+	assert(ff() == 0);
+	assert(ff() == 1);
+	assert(ff() == 2);
 }
