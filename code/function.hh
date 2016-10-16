@@ -27,10 +27,13 @@ public:
 	
 	function(const function& other)
 	{
+		if (other.wrapper_)
+			wrapper_ = other.wrapper_->copy();
 	}
 	
 	function(function&& other)
 	{
+		wrapper_ = std::move(other.wrapper_);
 	}
 	
 	explicit operator bool() const

@@ -30,7 +30,11 @@ int main()
 	}
 	
 	// construction from function pointer
- 	//pr::function<int()> c1 = global_counter;
+	pr::function<int()> c1 = global_counter;
+	assert(!!c1);
+	assert(c1() == 0);
+	assert(c1() == 1);
+	assert(c1() == 2);
 	
 	// construction from lambda
 	pr::function<int()> c2 = [c = int{}]() mutable { return c++; };
@@ -41,9 +45,10 @@ int main()
 	
 	// copy construction
 	auto copy = c2;
-	//assert(!!copy);
-	//assert(copy() == 2);
-	//assert(copy() == 3);
+	assert(!!copy);
+	assert(copy() == 2);
+	assert(copy() == 3);
+	// the original's state remains unchanged
 	assert(c2() == 2);
 	assert(c2() == 3);
 	
