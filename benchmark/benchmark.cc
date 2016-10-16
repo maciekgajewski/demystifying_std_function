@@ -24,30 +24,36 @@ icounter& get_counter();
 volatile int out;
 using StdFun = std::function<int()>;
 
+static const int ITER = 100;
+
 void function(benchmark::State& state, const StdFun& f)
 {
 	while(state.KeepRunning())
-		benchmark::DoNotOptimize(out = f());
+		for(int i =0 ;i < ITER; i++)
+			benchmark::DoNotOptimize(out = f());
 }
 
 void raw_functor(benchmark::State& state)
 {
 	counter_ftor f{};
 	while(state.KeepRunning())
-		benchmark::DoNotOptimize(out = f());
+		for(int i =0 ;i < ITER; i++)
+			benchmark::DoNotOptimize(out = f());
 }
 
 void raw_function(benchmark::State& state)
 {
 	while(state.KeepRunning())
-		benchmark::DoNotOptimize(out = global_counter());
+		for(int i =0 ;i < ITER; i++)
+			benchmark::DoNotOptimize(out = global_counter());
 }
 
 void virtual_fun(benchmark::State& state)
 {
 	icounter& c = get_counter();
 	while(state.KeepRunning())
-		benchmark::DoNotOptimize(out = c.count());
+		for(int i =0 ;i < ITER; i++)
+			benchmark::DoNotOptimize(out = c.count());
 }
 
 
