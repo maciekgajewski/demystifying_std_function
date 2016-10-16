@@ -1,3 +1,5 @@
+#include "code/function.hh"
+
 #include <benchmark/benchmark.h>
 
 #include <functional>
@@ -23,10 +25,18 @@ icounter& get_counter();
 
 volatile int out;
 using StdFun = std::function<int()>;
+using PrFun = presentation::function<int()>;
 
 static const int ITER = 100;
 
-void function(benchmark::State& state, const StdFun& f)
+void std_function(benchmark::State& state, const StdFun& f)
+{
+	while(state.KeepRunning())
+		for(int i =0 ;i < ITER; i++)
+			benchmark::DoNotOptimize(out = f());
+}
+
+void pr_function(benchmark::State& state, const PrFun& f)
 {
 	while(state.KeepRunning())
 		for(int i =0 ;i < ITER; i++)
@@ -56,13 +66,17 @@ void virtual_fun(benchmark::State& state)
 			benchmark::DoNotOptimize(out = c.count());
 }
 
+StdFun std_fun_holding_functor = counter_ftor{};
+BENCHMARK_CAPTURE(std_function, std_function_holding_functor, std_fun_holding_functor);
 
+StdFun std_fun_holding_function = &global_counter;
+BENCHMARK_CAPTURE(std_function, std_function_holding_function, std_fun_holding_function);
 
-StdFun fun_holding_functor = counter_ftor{};
-BENCHMARK_CAPTURE(function, function_holding_functor, fun_holding_functor);
+PrFun pr_fun_holding_functor = counter_ftor{};
+BENCHMARK_CAPTURE(pr_function, pr_function_holding_functor, pr_fun_holding_functor);
 
-StdFun fun_holding_function = &global_counter;
-BENCHMARK_CAPTURE(function, function_holding_function, fun_holding_function);
+PrFun pr_fun_holding_function = &global_counter;
+BENCHMARK_CAPTURE(pr_function, pr_function_holding_function, pr_fun_holding_function);
 
 BENCHMARK(raw_functor);
 BENCHMARK(raw_function);

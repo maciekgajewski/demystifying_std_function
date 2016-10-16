@@ -49,7 +49,7 @@ public:
 		wrapper_ = std::make_unique<WrapperType>(f);
 	}
 	
-	Ret operator()(Args... args)
+	Ret operator()(Args... args) const
 	{
 		if (wrapper_)
 			return wrapper_->invoke(std::forward<Args>(args)...);
