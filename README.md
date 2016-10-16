@@ -5,7 +5,7 @@ This repo contains a minimalistic implementation of std::function, "optimized fo
 
 ## C++ concepts used
 
-Stuiden should be familiar with the following C++ concepts:
+Student should be familiar with the following C++ concepts:
 
 * Functor
 * Function pointer
