@@ -13,14 +13,39 @@ int main()
 {
 	namespace pr = presentation;
 	
+	// tests
+
+	// defaul construction
 	pr::function<int()> c0;
- 	//pr::function<int()> c1 = global_counter;
- 	pr::function<int()> c2 = [c = int{}]() mutable { return c++; };
+	assert(!c0);
 	
+	// caling empty throws
+	try {
+		c0();
+		assert(false && "Should call");
+	} catch(const std::bad_function_call&) {
+		// OK=
+	} catch(...) {
+		assert(false && "Should throw std::bad_function_call");
+	}
+	
+	// construction from function pointer
+ 	//pr::function<int()> c1 = global_counter;
+	
+	// construction from lambda
+	pr::function<int()> c2 = [c = int{}]() mutable { return c++; };
+	
+	assert(!!c2);
 	assert(c2() == 0);
 	assert(c2() == 1);
-	std::cout << c2() << std::endl;
-	std::cout << c2() << std::endl;
 	
+	// copy construction
+	auto copy = c2;
+	//assert(!!copy);
+	//assert(copy() == 2);
+	//assert(copy() == 3);
+	assert(c2() == 2);
+	assert(c2() == 3);
 	
+
 }

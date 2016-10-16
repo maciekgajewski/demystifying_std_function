@@ -3,6 +3,7 @@
 #include "function_detail.hh"
 
 #include <memory>
+#include <functional>
 
 namespace presentation {
 
@@ -32,6 +33,11 @@ public:
 	{
 	}
 	
+	explicit operator bool() const
+	{
+		return !!wrapper_;
+	}
+	
 	template<typename Ftor>
 	function(Ftor f)
 	{
@@ -42,7 +48,10 @@ public:
 	
 	Ret operator()(Args... args)
 	{
-		return Ret{};
+		if (wrapper_)
+			return wrapper_->invoke(std::forward<Args>(args)...);
+		else
+			throw std::bad_function_call();
 	}
 	
 };
