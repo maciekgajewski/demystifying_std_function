@@ -9,6 +9,11 @@ int global_counter()
 	return c++;
 }
 
+int increment(int& v)
+{
+	return v++;
+}
+
 int main()
 {
 	namespace pr = presentation;
@@ -51,6 +56,17 @@ int main()
 	// the original's state remains unchanged
 	assert(c2() == 2);
 	assert(c2() == 3);
+	
+	// bind
+	int ctr = 0;
+	pr::function<int()> b = std::bind(increment, std::ref(ctr));
+	assert(!!b);
+	assert(b() == 0);
+	assert(b() == 1);
+	assert(b() == 2);
+	assert(ctr == 3);
+	
+	
 	
 
 }
