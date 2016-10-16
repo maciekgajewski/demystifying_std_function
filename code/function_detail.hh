@@ -2,10 +2,10 @@
 
 #include <utility>
 #include <memory>
+#include <typeinfo>
 
 namespace presentation { namespace detail {
 
-	
 // Functor-wrapper interface, functor type erased
 template<typename Ret, typename... Args>
 struct wrapper_iface
@@ -13,6 +13,7 @@ struct wrapper_iface
 	virtual ~wrapper_iface() {}
 	virtual Ret invoke(Args&& ... args) = 0;
 	virtual std::unique_ptr<wrapper_iface> copy() const = 0;
+	virtual const std::type_info& target_type() const = 0;
 };
 
 
@@ -34,6 +35,12 @@ struct functor_wrapper : public wrapper_iface<Ret, Args...>
 	{
 		return std::make_unique<ThisType>(*this);
 	}
+	
+	const std::type_info& target_type() const override
+	{
+		return typeid(Functor);
+	}
+
 };
 
 

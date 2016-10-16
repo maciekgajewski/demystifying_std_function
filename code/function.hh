@@ -57,6 +57,14 @@ public:
 			throw std::bad_function_call();
 	}
 	
+	const std::type_info& target_type() const
+	{
+		if (wrapper_)
+			return wrapper_->target_type();
+		else
+			return typeid(void);
+	}
+	
 };
 	
 }

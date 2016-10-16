@@ -14,6 +14,12 @@ int increment(int& v)
 	return v++;
 }
 
+struct counter_functor
+{
+	int c = 0;
+	int operator()() { return c++; }
+};
+
 int main()
 {
 	namespace pr = presentation;
@@ -66,7 +72,9 @@ int main()
 	assert(b() == 2);
 	assert(ctr == 3);
 	
-	
+	// type
+	pr::function<int()> ff = counter_functor{};
+	assert(ff.target_type() == typeid(counter_functor));
 	
 
 }
